@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHANUWA BOT - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: #f0f2f5;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .navbar p {
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(0.98);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #2f855a 100%);
+        }
+        
+        .list-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🤖 SHANUWA MINI BOT</h1>
+        <p>Admin Dashboard | Version 6.0.0 | Owner: Shanuka Shameen</p>
+    </div>
+    
+    <div class="container">
+        <!-- Bot Status Card -->
+        <div class="card">
+            <h2>📊 Bot Status</h2>
+            <div class="stat">
+                <span class="stat-label">Active Sessions:</span>
+                <span class="stat-value" id="activeCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Bot Name:</span>
+                <span class="stat-value" id="botName">SHANUWA</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Owner:</span>
+                <span class="stat-value" id="ownerName">Shanuka</span>
+            </div>
+            <button class="btn" onclick="refreshStatus()">🔄 Refresh</button>
+        </div>
+        
+        <!-- Actions Card -->
+        <div class="card">
+            <h2>⚡ Quick Actions</h2>
+            <button class="btn btn-success" onclick="reconnectAll()">🔄 Reconnect All Bots</button>
+            <button class="btn" onclick="broadcastMessage()">📢 Broadcast Message</button>
+            <button class="btn" onclick="updateConfig()">⚙️ Update Config</button>
+            <button class="btn btn-danger" onclick="clearAllSessions()">🗑️ Clear All Sessions</button>
+        </div>
+        
+        <!-- Active Sessions Card -->
+        <div class="card">
+            <h2>📱 Active Sessions</h2>
+            <div id="sessionsList">
+                <div class="loading">Loading sessions...</div>
+            </div>
+        </div>
+        
+        <!-- Social Links Card -->
+        <div class="card">
+            <h2>🔗 Social Links</h2>
+            <div class="list-item">
+                <span>WhatsApp Channel</span>
+                <a href="https://whatsapp.com/channel/0029VbCMX3K7j6fxob6STf3C" target="_blank" class="badge">Join</a>
+            </div>
+            <div class="list-item">
+                <span>Support Group</span>
+                <a href="https://chat.whatsapp.com/GnYQAKjoW8QD0vZL5abDk7" target="_blank" class="badge">Join</a>
+            </div>
+            <div class="list-item">
+                <span>Owner Number</span>
+                <span class="badge">0724389699</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function refreshStatus() {
+            try {
+                const res = await fetch('/active');
+                const data = await res.json();
+                document.getElementById('activeCount').textContent = data.count || 0;
+                
+                const sessionsList = document.getElementById('sessionsList');
+                if (data.numbers && data.numbers.length > 0) {
+                    sessionsList.innerHTML = data.numbers.map(num => 
+                        `<div class="list-item">
+                            <span>${num}</span>
+                            <span class="badge">Active</span>
+                        </div>`
+                    ).join('');
+                } else {
+                    sessionsList.innerHTML = '<div class="list-item">No active sessions</div>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        async function reconnectAll() {
+            if (confirm('Reconnect all bots?')) {
+                const res = await fetch('/reconnect');
+                alert('Reconnection initiated!');
+            }
+        }
+        
+        function broadcastMessage() {
+            const msg = prompt('Enter broadcast message:');
+            if (msg) alert('Broadcast feature coming soon!');
+        }
+        
+        function updateConfig() {
+            alert('Config update feature coming soon!');
+        }
+        
+        function clearAllSessions() {
+            if (confirm('⚠️ Clear ALL sessions? This cannot be undone!')) {
+                alert('Session clear feature coming soon!');
+            }
+        }
+        
+        // Initial load
+        refreshStatus();
+        setInterval(refreshStatus, 30000); // Refresh every 30 seconds
+    </script>
+</body>
+</html>

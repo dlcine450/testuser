@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHANUWA MINI BOT - PAIRING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h2 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .result h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .code-box {
+            background: white;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #764ba2;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .code-box:hover {
+            background: #f0f0f0;
+            transform: scale(1.02);
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .info-box p {
+            color: #0d47a1;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-btn {
+            padding: 8px 20px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 SHANUWA MINI</h1>
+            <h2>WhatsApp Bot Pairing</h2>
+            <p>Enter your WhatsApp number to get pairing code</p>
+        </div>
+        
+        <div class="input-group">
+            <label>📱 WhatsApp Number (with country code)</label>
+            <input type="text" id="number" placeholder="94724389699" value="94724389699">
+        </div>
+        
+        <button class="btn" id="pairBtn">🔗 Get Pairing Code</button>
+        
+        <div class="result" id="result">
+            <h3>✅ Pairing Code Generated!</h3>
+            <div class="code-box" id="codeBox" onclick="copyCode()">
+                <span id="code">------</span>
+            </div>
+            <p style="text-align: center; color: #666; margin-bottom: 15px;">Click on code to copy</p>
+            
+            <div class="info-box">
+                <p>📌 <strong>How to pair:</strong></p>
+                <p>1️⃣ Open WhatsApp on your phone</p>
+                <p>2️⃣ Go to Linked Devices</p>
+                <p>3️⃣ Tap "Link a Device"</p>
+                <p>4️⃣ Enter this code: <strong id="codeSmall"></strong></p>
+                <p>⏳ Code expires in 5 minutes</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>👑 Owner: Shanuka Shameen</p>
+            <div class="social-links">
+                <a href="https://whatsapp.com/channel/0029VbCMX3K7j6fxob6STf3C" target="_blank" class="social-btn">📢 Channel</a>
+                <a href="https://chat.whatsapp.com/GnYQAKjoW8QD0vZL5abDk7" target="_blank" class="social-btn">👥 Group</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('pairBtn').addEventListener('click', async () => {
+            const number = document.getElementById('number').value.replace(/[^0-9]/g, '');
+            
+            if (!number || number.length < 10) {
+                alert('Please enter a valid WhatsApp number');
+                return;
+            }
+            
+            document.getElementById('pairBtn').textContent = '⏳ Generating...';
+            document.getElementById('pairBtn').disabled = true;
+            
+            try {
+                const response = await fetch(`/code?number=${number}`);
+                const data = await response.json();
+                
+                if (data.code) {
+                    document.getElementById('code').textContent = data.code;
+                    document.getElementById('codeSmall').textContent = data.code;
+                    document.getElementById('result').classList.add('show');
+                } else {
+                    alert('Failed to generate code. Please try again.');
+                }
+            } catch (error) {
+                alert('Error connecting to server');
+                console.error(error);
+            } finally {
+                document.getElementById('pairBtn').textContent = '🔗 Get Pairing Code';
+                document.getElementById('pairBtn').disabled = false;
+            }
+        });
+        
+        function copyCode() {
+            const code = document.getElementById('code').textContent;
+            navigator.clipboard.writeText(code);
+            alert('✅ Code copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
