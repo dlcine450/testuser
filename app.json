@@ -1,0 +1,21 @@
+{
+  "name": "test",
+  "description": "test mini",
+  "logo": "https://files.catbox.moe/aswf.jpeg",
+  "keywords": ["bot"],
+  "success_url": "/",
+
+  "env": {
+    "JSONS": {
+      "description": "session",
+      "required": true
+    }
+},
+
+     "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+        }
+     ],
+  "stack": "heroku-24"
+}
